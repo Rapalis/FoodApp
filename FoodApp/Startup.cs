@@ -1,8 +1,11 @@
+using FoodApp.DataAccess;
+using FoodApp.Repositories;
 using FoodApp.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,7 +32,8 @@ namespace FoodApp
         {
             // Dependency injections
             services.AddScoped<IProvidersService, ProvidersService>();
-            
+            services.AddScoped<IProvidersRepository, ProvidersRepository>();
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -39,7 +43,11 @@ namespace FoodApp
                     Title = "Food app API",
                 });
             });
-            
+
+            // Configuring database
+            services.AddDbContext<DatabaseContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("Default")));
+
             services.AddControllers();
         }
 
