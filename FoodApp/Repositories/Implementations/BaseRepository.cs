@@ -33,8 +33,11 @@ namespace FoodApp.Repositories
 
         public async Task<T> UpdateAsync(T entity)
         {
-            
-            _dbCtx.Set<T>().Attach(entity);
+            T currentEntity = await GetAsync(entity.Id);
+            if (currentEntity == null)
+                return null;
+
+            _dbCtx.Entry(currentEntity).CurrentValues.SetValues(entity);
             await _dbCtx.SaveChangesAsync();
             return entity;
         }
