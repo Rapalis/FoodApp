@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using FoodApp.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FoodApp.Repositories
 {
-    public interface IBaseRepository<T> where T: class
+    public interface IBaseRepository<T> where T: BaseEntity
     {
         Task<T> GetAsync(object id);
 

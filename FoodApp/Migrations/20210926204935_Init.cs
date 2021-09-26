@@ -26,7 +26,8 @@ namespace FoodApp.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Surname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
@@ -71,6 +72,7 @@ namespace FoodApp.Migrations
                     Message = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
                     Score = table.Column<short>(type: "smallint", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId1 = table.Column<long>(type: "bigint", nullable: true),
                     DishID = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -83,11 +85,11 @@ namespace FoodApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Review_User_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Review_User_UserId1",
+                        column: x => x.UserId1,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -101,9 +103,9 @@ namespace FoodApp.Migrations
                 column: "DishID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Review_UserId",
+                name: "IX_Review_UserId1",
                 table: "Review",
-                column: "UserId");
+                column: "UserId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

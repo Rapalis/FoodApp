@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FoodApp.Models
 {
-    public class Review
+    public class Review: BaseEntity
     {
-        public long Id { get; set; }
         [Required]
         public DateTimeOffset Date { get; set; }
         [Required]

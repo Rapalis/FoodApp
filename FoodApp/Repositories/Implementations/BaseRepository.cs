@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FoodApp.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FoodApp.Repositories
 {
-    public class BaseRepository<T>: IBaseRepository<T> where T: class
+    public class BaseRepository<T>: IBaseRepository<T> where T: BaseEntity
     {
         private readonly DbContext _dbCtx;
 
@@ -32,6 +33,7 @@ namespace FoodApp.Repositories
 
         public async Task<T> UpdateAsync(T entity)
         {
+            
             _dbCtx.Set<T>().Attach(entity);
             await _dbCtx.SaveChangesAsync();
             return entity;

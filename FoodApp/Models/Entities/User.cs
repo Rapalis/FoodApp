@@ -4,9 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FoodApp.Models
 {
-    public class User
+    public class User: BaseEntity
     {
-        public Guid Id { get; set; }
         [Required]
         [MaxLength(50)]
         public string Email { get; set; }

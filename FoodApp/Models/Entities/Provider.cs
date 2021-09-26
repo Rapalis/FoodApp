@@ -3,9 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace FoodApp.Models
 {
-    public class Provider
+    public class Provider: BaseEntity
     {
-        public long Id { get; set; }
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
