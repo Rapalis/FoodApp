@@ -1,38 +1,53 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using AutoMapper;
 using FoodApp.Models;
+using FoodApp.Repositories;
 
 namespace FoodApp.Services
 {
     public class ProvidersService: IProvidersService
     {
+        private readonly IProvidersRepository _providersRepository;
+        private readonly IMapper _mapper;
+
+        public ProvidersService(IProvidersRepository providersRepository, IMapper mapper)
+        {
+            _providersRepository = providersRepository;
+            _mapper = mapper;
+        }
+
         public async Task<ProviderDTO> GetAsync(long id)
         {
-            if (id == 10)
-            {
-                return null;
-            }
-            return new ProviderDTO { Name = "Simple name", Address = "Definitely not fake address" };
+            Provider outResultEntity = await _providersRepository.GetAsync(id);
+            return _mapper.Map<ProviderDTO>(outResultEntity);
         }
 
-        public Task<ProviderDTO> GetAllAsync()
+        public async Task<IEnumerable<ProviderDTO>> GetAllAsync()
         {
-            throw new System.NotImplementedException();
+            IEnumerable<Provider> outResultEntities = await _providersRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<Provider>, IEnumerable<ProviderDTO>>(outResultEntities);
         }
 
-        public Task<ProviderDTO> CreateAsync(CreateProviderDTO createRequestDTO)
+        public async Task<ProviderDTO> CreateAsync(CreateProviderDTO createRequestDTO)
         {
-            throw new System.NotImplementedException();
+            Provider providerEntity = _mapper.Map<Provider>(createRequestDTO);
+            providerEntity = await _providersRepository.CreateAsync(providerEntity);
+            return _mapper.Map<ProviderDTO>(providerEntity);
         }
 
-        public Task<ProviderDTO> UpdateAsync(long id, CreateProviderDTO updateRequestDTO)
+        public async Task<ProviderDTO> UpdateAsync(long id, CreateProviderDTO updateRequestDTO)
         {
-            throw new System.NotImplementedException();
+            Provider providerEntity = _mapper.Map<Provider>(updateRequestDTO);
+            providerEntity.Id = id;
+            providerEntity = await _providersRepository.UpdateAsync(providerEntity);
+            return _mapper.Map<ProviderDTO>(providerEntity);
         }
 
-        public Task<bool> DeleteAsync(long id)
+        public async Task<bool> DeleteAsync(long id)
         {
-            throw new System.NotImplementedException();
+            return await _providersRepository.DeleteAsync(id);
         }
     }
 }
