@@ -34,6 +34,9 @@ namespace FoodApp
             services.AddScoped<IProvidersService, ProvidersService>();
             services.AddScoped<IProvidersRepository, ProvidersRepository>();
 
+            // AutoMapper
+            services.AddAutoMapper(typeof(Startup));
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
