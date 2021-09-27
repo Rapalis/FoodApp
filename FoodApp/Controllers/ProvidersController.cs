@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FoodApp.Controllers
 {
-    [Route(RouteConsts.PROVIDERS_ENDPOINT_URL)]
+    [Route(RouteConsts.BASE_URL)]
     [ApiController]
     public class ProvidersController : ControllerBase
     {
@@ -19,14 +19,14 @@ namespace FoodApp.Controllers
             _providersService = providersService;
         }
 
-        [HttpGet]
+        [HttpGet(RouteConsts.PROVIDERS_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ProviderDTO>>> Get()
+        public async Task<ActionResult<IEnumerable<ProviderDTO>>> GetAll()
         {
             return Ok(await _providersService.GetAllAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet(RouteConsts.PROVIDERS_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProviderDTO>> Get(long id)
@@ -37,14 +37,14 @@ namespace FoodApp.Controllers
             return Ok(receivedProvider);
         }
 
-        [HttpPost]
+        [HttpPost(RouteConsts.PROVIDERS_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ProviderDTO>> Post([FromBody] CreateProviderDTO createRequestDTO)
         {
             return Ok(await _providersService.CreateAsync(createRequestDTO));
         }
 
-        [HttpPut("{id}")]
+        [HttpPut(RouteConsts.PROVIDERS_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProviderDTO>> Put(long id, [FromBody] CreateProviderDTO updateRequestDTO)
@@ -55,7 +55,7 @@ namespace FoodApp.Controllers
             return Ok(updatedProvider);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete(RouteConsts.PROVIDERS_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult> Delete(long id)
