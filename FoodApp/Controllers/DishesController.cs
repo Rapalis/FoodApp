@@ -1,4 +1,5 @@
 ﻿using FoodApp.Constants;
+using FoodApp.Models;
 using FoodApp.Models.DataTransferObjects;
 using FoodApp.Services;
 using Microsoft.AspNetCore.Http;
@@ -23,27 +24,33 @@ namespace FoodApp.Controllers
 
         [HttpGet(RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<DishDTO>>> Get(long providerId)
+        public async Task<ActionResult<IEnumerable<DishDTO>>> GetAll(long providerId)
         {
-            return Ok(await _dishesService.GetAllAsync(providerId));
+            IEnumerable<DishDTO> receivedDishes = await _dishesService.GetAllAsync(providerId);
+            if (receivedDishes == null)
+                return NotFound();
+            return Ok();
         }
 
         [HttpGet(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DishDTO>> GetAll(long id)
+        public async Task<ActionResult<DishDTO>> Get(long id)
         {
-            DishDTO receivedProvider = await _dishesService.GetAsync(id);
-            if (receivedProvider == null)
+            DishDTO receivedDish = await _dishesService.GetAsync(id);
+            if (receivedDish == null)
                 return NotFound();
-            return Ok(receivedProvider);
+            return Ok(receivedDish);
         }
 
         [HttpPost (RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<DishDTO>> Post(long providerId, [FromBody] CreateDishDTO createRequestDTO)
         {
-            return Ok(await _dishesService.CreateAsync(providerId, createRequestDTO));
+            DishDTO receviedDish = await _dishesService.CreateAsync(providerId, createRequestDTO);
+            if (receviedDish == null)
+                return NotFound();
+            return Ok();
         }
 
         [HttpPut(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
@@ -51,10 +58,10 @@ namespace FoodApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<DishDTO>> Put(long id, [FromBody] CreateDishDTO updateRequestDTO)
         {
-            DishDTO updatedProvider = await _dishesService.UpdateAsync(id, updateRequestDTO);
-            if (updatedProvider == null)
+            DishDTO updatedDish = await _dishesService.UpdateAsync(id, updateRequestDTO);
+            if (updatedDish == null)
                 return NotFound();
-            return Ok(updatedProvider);
+            return Ok(updatedDish);
         }
 
         [HttpDelete(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
