@@ -33,6 +33,9 @@ namespace FoodApp
             // Dependency injections
             services.AddScoped<IProvidersService, ProvidersService>();
             services.AddScoped<IProvidersRepository, ProvidersRepository>();
+            services.AddScoped<IDishesService, DishesService>();
+            services.AddScoped<IDishesRepository, DishesRepository>();
+
 
             // AutoMapper
             services.AddAutoMapper(typeof(Startup));
