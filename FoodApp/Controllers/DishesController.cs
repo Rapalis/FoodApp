@@ -29,7 +29,7 @@ namespace FoodApp.Controllers
             IEnumerable<DishDTO> receivedDishes = await _dishesService.GetAllAsync(providerId);
             if (receivedDishes == null)
                 return NotFound();
-            return Ok();
+            return Ok(receivedDishes);
         }
 
         [HttpGet(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
@@ -50,7 +50,7 @@ namespace FoodApp.Controllers
             DishDTO receviedDish = await _dishesService.CreateAsync(providerId, createRequestDTO);
             if (receviedDish == null)
                 return NotFound();
-            return Ok();
+            return Ok(receviedDish);
         }
 
         [HttpPut(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
