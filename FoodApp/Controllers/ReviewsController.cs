@@ -21,15 +21,18 @@ namespace FoodApp.Controllers
 
         [HttpGet(RouteConsts.DISHES_REVIEWS_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<ReviewDTO>>> Get(long dishId)
+        public async Task<ActionResult<IEnumerable<ReviewDTO>>> GetAll(long dishId)
         {
-            return Ok(await _reviewsService.GetAllAsync(dishId));
+            IEnumerable<ReviewDTO> receivedReviews = await _reviewsService.GetAllAsync(dishId);
+            if (receivedReviews == null)
+                return NotFound();
+            return Ok(receivedReviews);
         }
 
         [HttpGet(RouteConsts.REVIEWS_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<ReviewDTO>> GetAll(long id)
+        public async Task<ActionResult<ReviewDTO>> Get(long id)
         {
             ReviewDTO receivedProvider = await _reviewsService.GetAsync(id);
             if (receivedProvider == null)
@@ -41,7 +44,10 @@ namespace FoodApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ReviewDTO>> Post(long dishId, [FromBody] CreateReviewDTO createRequestDTO)
         {
-            return Ok(await _reviewsService.CreateAsync(dishId, createRequestDTO));
+            ReviewDTO receviedReview = await _reviewsService.CreateAsync(dishId, createRequestDTO);
+            if (receviedReview == null)
+                return NotFound();
+            return Ok(receviedReview);
         }
 
         [HttpPut(RouteConsts.REVIEWS_ENDPOINT_URL + "/{id}")]
