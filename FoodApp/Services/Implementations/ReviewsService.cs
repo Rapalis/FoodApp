@@ -2,13 +2,10 @@
 using FoodApp.Models;
 using FoodApp.Models.DataTransferObjects;
 using FoodApp.Repositories;
-using FoodApp.Services.Interfaces;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace FoodApp.Services.Implementations
+namespace FoodApp.Services
 {
     public class ReviewsService : IReviewsService
     {

@@ -1,6 +1,6 @@
 ﻿using FoodApp.Constants;
 using FoodApp.Models.DataTransferObjects;
-using FoodApp.Services.Interfaces;
+using FoodApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

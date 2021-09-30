@@ -1,10 +1,7 @@
 ﻿using AutoMapper;
 using FoodApp.Models;
-using FoodApp.Models.DataTransferObjects;
 using FoodApp.Repositories;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace FoodApp.Services

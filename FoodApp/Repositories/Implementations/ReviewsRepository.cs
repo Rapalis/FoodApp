@@ -1,12 +1,11 @@
 ﻿using FoodApp.DataAccess;
 using FoodApp.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FoodApp.Repositories.Implementations
+namespace FoodApp.Repositories
 {
     public class ReviewsRepository: BaseRepository<Review>, IReviewsRepository
     {

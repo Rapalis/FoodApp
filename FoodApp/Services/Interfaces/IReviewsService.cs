@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace FoodApp.Services.Interfaces
+namespace FoodApp.Services
 {
     public interface IReviewsService
     {
