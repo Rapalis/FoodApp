@@ -53,5 +53,12 @@ namespace FoodApp.Repositories
             
             return true;
         }
+
+        public async Task<bool> Exists(object id)
+        {
+            if (await GetAsync(id) == null)
+                return false;
+            return true;
+        }
     }
 }

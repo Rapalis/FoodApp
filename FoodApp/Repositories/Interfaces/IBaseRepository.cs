@@ -15,5 +15,7 @@ namespace FoodApp.Repositories
         Task<T> UpdateAsync(T entity);
 
         Task<bool> DeleteAsync(object id);
+
+        Task<bool> Exists(object id);
     }
 }
