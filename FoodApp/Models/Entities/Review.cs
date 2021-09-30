@@ -13,7 +13,7 @@ namespace FoodApp.Models
         [Required]
         public short Score { get; set; }
         [Required]
-        public Guid UserId { get; set; }
+        public long UserId { get; set; }
         public User User { get; set; }
         [Required]
         public long DishID { get; set; }
