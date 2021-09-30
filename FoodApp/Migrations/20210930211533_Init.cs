@@ -71,8 +71,7 @@ namespace FoodApp.Migrations
                     Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     Message = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
                     Score = table.Column<short>(type: "smallint", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId1 = table.Column<long>(type: "bigint", nullable: true),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     DishID = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
@@ -85,11 +84,11 @@ namespace FoodApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Review_User_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_Review_User_UserId",
+                        column: x => x.UserId,
                         principalTable: "User",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -103,9 +102,9 @@ namespace FoodApp.Migrations
                 column: "DishID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Review_UserId1",
+                name: "IX_Review_UserId",
                 table: "Review",
-                column: "UserId1");
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
