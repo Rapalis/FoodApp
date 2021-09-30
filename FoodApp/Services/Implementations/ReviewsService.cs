@@ -48,6 +48,7 @@ namespace FoodApp.Services
         {
             Review reviewEntity = _mapper.Map<Review>(updateRequestDTO);
             reviewEntity.Id = id;
+            reviewEntity.UserId = 420; // Temp fake user id
             reviewEntity = await _reviewsRepository.UpdateAsync(reviewEntity);
             return _mapper.Map<ReviewDTO>(reviewEntity);
         }
