@@ -1,6 +1,9 @@
 using FoodApp.DataAccess;
 using FoodApp.Repositories;
+using FoodApp.Repositories.Implementations;
 using FoodApp.Services;
+using FoodApp.Services.Implementations;
+using FoodApp.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +38,8 @@ namespace FoodApp
             services.AddScoped<IProvidersRepository, ProvidersRepository>();
             services.AddScoped<IDishesService, DishesService>();
             services.AddScoped<IDishesRepository, DishesRepository>();
+            services.AddScoped<IReviewsService, ReviewsService>();
+            services.AddScoped<IReviewsRepository, ReviewsRepository>();
 
 
             // AutoMapper
