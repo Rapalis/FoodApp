@@ -44,10 +44,10 @@ namespace FoodApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ReviewDTO>> Post(long dishId, [FromBody] CreateReviewDTO createRequestDTO)
         {
-            ReviewDTO receviedReview = await _reviewsService.CreateAsync(dishId, createRequestDTO);
-            if (receviedReview == null)
+            ReviewDTO createdReview = await _reviewsService.CreateAsync(dishId, createRequestDTO);
+            if (createdReview == null)
                 return NotFound();
-            return Ok(receviedReview);
+            return CreatedAtAction(nameof(Get), new { id = createdReview.Id }, createdReview);
         }
 
         [HttpPut(RouteConsts.REVIEWS_ENDPOINT_URL + "/{id}")]

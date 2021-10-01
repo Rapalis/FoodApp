@@ -41,7 +41,8 @@ namespace FoodApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ProviderDTO>> Post([FromBody] CreateProviderDTO createRequestDTO)
         {
-            return Ok(await _providersService.CreateAsync(createRequestDTO));
+            ProviderDTO createdProvider = await _providersService.CreateAsync(createRequestDTO);
+            return CreatedAtAction(nameof(Get), new { id = createdProvider.Id }, createdProvider);
         }
 
         [HttpPut(RouteConsts.PROVIDERS_ENDPOINT_URL + "/{id}")]
