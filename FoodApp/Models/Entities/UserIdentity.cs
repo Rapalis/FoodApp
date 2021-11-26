@@ -1,10 +1,9 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity;
+
 namespace FoodApp.Models.Entities
 {
-    public class UserIdentity
+    public class UserIdentity: IdentityUser
     {
-        public UserIdentity()
-        {
-        }
     }
 }

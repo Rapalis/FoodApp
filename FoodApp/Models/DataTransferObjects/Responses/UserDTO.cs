@@ -1,10 +1,11 @@
 ﻿using System;
-namespace FoodApp.Models.DataTransferObjects.Responses
+
+namespace FoodApp.Models.DataTransferObjects
 {
     public class UserDTO
     {
-        public UserDTO()
-        {
-        }
+        public long Id { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
     }
 }

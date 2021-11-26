@@ -4,8 +4,8 @@ using FoodApp.Models;
 
 namespace FoodApp.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository: IBaseRepository<User>
     {
-        Task<IEnumerable<Review>> GetAllAsync(long dishId);
+        public Task<User> FindByNameAsync(string username);
     }
 }
