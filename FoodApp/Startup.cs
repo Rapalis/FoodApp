@@ -1,12 +1,19 @@
+using System.Text;
 using FoodApp.DataAccess;
+using FoodApp.Models;
+using FoodApp.Models.Entities;
 using FoodApp.Repositories;
 using FoodApp.Services;
+using FoodApp.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace FoodApp
@@ -23,6 +30,18 @@ namespace FoodApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // JWT auth
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]));
+                });
+
             // Dependency injections
             services.AddScoped<IProvidersService, ProvidersService>();
             services.AddScoped<IProvidersRepository, ProvidersRepository>();
@@ -30,6 +49,9 @@ namespace FoodApp
             services.AddScoped<IDishesRepository, DishesRepository>();
             services.AddScoped<IReviewsService, ReviewsService>();
             services.AddScoped<IReviewsRepository, ReviewsRepository>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserService, UserService>();
 
 
             // AutoMapper
@@ -70,6 +92,7 @@ namespace FoodApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

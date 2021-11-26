@@ -17,7 +17,19 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.10" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.21" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
   </ItemGroup>
 
 
+  <ItemGroup>
+    <None Remove="Utils\" />
+    <None Remove="Microsoft.AspNetCore.Identity" />
+    <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
+    <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL.Design" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utils\" />
+  </ItemGroup>
 </Project>

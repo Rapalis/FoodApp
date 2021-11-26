@@ -1,4 +1,5 @@
 ﻿using FoodApp.Constants;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,15 +11,13 @@ namespace FoodApp.Models
         [MaxLength(50)]
         public string Email { get; set; }
         [MaxLength(50)]
-        public string Name { get; set; }
-        [MaxLength(50)]
-        public string Surname { get; set; }
+        public string UserName { get; set; }
         [Required]
         [MaxLength(20)]
         public string Password { get; set; }
-        [MaxLength(12)]
-        public string PhoneNumber { get; set; }
-        public UserRoles Role { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string Role { get; set; }
         //public IEnumerable<IBillingProfile> Billing { get; set; }
         //public IEnumerable<Address> Addresses { get; set; }
     }
