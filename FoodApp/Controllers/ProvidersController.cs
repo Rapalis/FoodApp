@@ -5,10 +5,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace FoodApp.Controllers
 {
     [Route(RouteConsts.BASE_URL)]
+    [Authorize]
     [ApiController]
     public class ProvidersController : ControllerBase
     {
@@ -19,6 +22,7 @@ namespace FoodApp.Controllers
             _providersService = providersService;
         }
 
+        [Authorize(Roles = "SimpleUser, Admin")]
         [HttpGet(RouteConsts.PROVIDERS_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ProviderDTO>>> GetAll()
@@ -26,6 +30,7 @@ namespace FoodApp.Controllers
             return Ok(await _providersService.GetAllAsync());
         }
 
+        [Authorize(Roles = "SimpleUser, Admin")]
         [HttpGet(RouteConsts.PROVIDERS_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -37,6 +42,7 @@ namespace FoodApp.Controllers
             return Ok(receivedProvider);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost(RouteConsts.PROVIDERS_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<ProviderDTO>> Post([FromBody] CreateProviderDTO createRequestDTO)
@@ -45,6 +51,7 @@ namespace FoodApp.Controllers
             return CreatedAtAction(nameof(Get), new { id = createdProvider.Id }, createdProvider);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut(RouteConsts.PROVIDERS_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -56,6 +63,7 @@ namespace FoodApp.Controllers
             return Ok(updatedProvider);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete(RouteConsts.PROVIDERS_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

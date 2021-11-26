@@ -39,8 +39,15 @@ namespace FoodApp
             })
                 .AddJwtBearer(options =>
                 {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false
+                    };
+                    options.Audience = Configuration["JWT:ValidAudience"];
+                    options.ClaimsIssuer = Configuration["JWT:ValidIssuer"];
                     options.TokenValidationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]));
                 });
+
 
             // Dependency injections
             services.AddScoped<IProvidersService, ProvidersService>();
@@ -72,13 +79,18 @@ namespace FoodApp
                 options.UseNpgsql(Configuration.GetConnectionString("Default")));
 
             services.AddControllers();
+
+            services.AddMvc(options =>
+            {
+                options.SuppressAsyncSuffixInActionNames = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Enable Swagger
-            /*  app.UseSwagger();
+            /*app.UseSwagger();
               app.UseSwaggerUI(c =>
               {
                   c.SwaggerEndpoint("/swagger/v1/swagger.json", "Food app API V1");
@@ -91,9 +103,9 @@ namespace FoodApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {

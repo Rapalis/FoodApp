@@ -34,13 +34,13 @@ namespace FoodApp.Services
             return _mapper.Map<IEnumerable<Review>, IEnumerable<ReviewDTO>>(outResultEntities);
         }
 
-        public async Task<ReviewDTO> CreateAsync(long dishId, CreateReviewDTO createRequestDTO)
+        public async Task<ReviewDTO> CreateAsync(long dishId, CreateReviewDTO createRequestDTO, long userId)
         {
             if (!await _dishesRepository.Exists(dishId))
                 return null;
             Review reviewEntity = _mapper.Map<Review>(createRequestDTO);
             reviewEntity.DishID = dishId;
-            reviewEntity.UserId = 1; // Temp fake user id
+            reviewEntity.UserId = userId; // Temp fake user id
             reviewEntity = await _reviewsRepository.CreateAsync(reviewEntity);
             return _mapper.Map<ReviewDTO>(reviewEntity);
         }

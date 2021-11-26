@@ -17,10 +17,16 @@ namespace FoodApp.Utils
     {
         public readonly IUserService _userManngager;
         public readonly SymmetricSecurityKey _authSignKey;
+        public readonly string _authIssuer;
+        public readonly string _authClient;
+
+
         public AuthService(IConfiguration configuration, IUserService userManngager)
         {
             _userManngager = userManngager;
             _authSignKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]));
+            _authIssuer = configuration["JWT:ValidIssuer"];
+            _authClient = configuration["JWT:ValidAudience"];
         }
 
         public async Task<string> CreateAccessTokenAsync(User user)
@@ -38,6 +44,8 @@ namespace FoodApp.Utils
 
             var accessSecurityToken = new JwtSecurityToken
             (
+                issuer: _authIssuer,
+                audience: _authClient,
                 expires: DateTime.UtcNow.AddHours(1),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(_authSignKey, SecurityAlgorithms.HmacSha256)

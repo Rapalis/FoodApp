@@ -29,11 +29,9 @@ namespace FoodApp.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
-                    Surname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
+                    UserName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: true),
                     Password = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "character varying(12)", maxLength: 12, nullable: true),
-                    Role = table.Column<int>(type: "integer", nullable: false)
+                    Role = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -72,7 +70,7 @@ namespace FoodApp.Migrations
                     Message = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
                     Score = table.Column<short>(type: "smallint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    DishID = table.Column<long>(type: "bigint", nullable: true)
+                    DishID = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {

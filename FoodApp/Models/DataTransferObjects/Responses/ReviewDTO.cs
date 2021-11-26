@@ -8,5 +8,6 @@ namespace FoodApp.Models.DataTransferObjects
         public DateTimeOffset Date { get; set; }
         public string Message { get; set; }
         public short Score { get; set; }
+        public long UserId { get; set; }
     }
 }

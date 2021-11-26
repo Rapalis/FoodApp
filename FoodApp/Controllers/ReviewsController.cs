@@ -1,14 +1,18 @@
 ﻿using FoodApp.Constants;
 using FoodApp.Models.DataTransferObjects;
 using FoodApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FoodApp.Controllers
 {
     [Route(RouteConsts.BASE_URL)]
+    [Authorize]
     [ApiController]
     public class ReviewsController : ControllerBase
     {
@@ -67,10 +71,10 @@ namespace FoodApp.Controllers
             var receivedDish = await _dishesService.GetAsync(dishId);
             if (receivedDish == null)
                 return NotFound();
-            ReviewDTO createdReview = await _reviewsService.CreateAsync(dishId, createRequestDTO);
+            ReviewDTO createdReview = await _reviewsService.CreateAsync(dishId, createRequestDTO, Convert.ToInt64(User.FindFirstValue("userId")));
             if (createdReview == null)
                 return NotFound();
-            return CreatedAtAction(nameof(Get), new { id = createdReview.Id }, createdReview);
+            return CreatedAtAction(nameof(Get), new { providerId = providerId, dishId = dishId, id = createdReview.Id }, createdReview);
         }
 
         [HttpPut(RouteConsts.DISHES_REVIEWS_ENDPOINT_URL + "/{id}")]
@@ -84,9 +88,14 @@ namespace FoodApp.Controllers
             var receivedDish = await _dishesService.GetAsync(dishId);
             if (receivedDish == null)
                 return NotFound();
-            ReviewDTO updatedProvider = await _reviewsService.UpdateAsync(id, updateRequestDTO);
-            if (updatedProvider == null)
+
+            var review = await _reviewsService.GetAsync(id);
+            if (review == null)
                 return NotFound();
+            if (Convert.ToInt64(User.FindFirstValue("userId")) != review.UserId && User.FindFirstValue(ClaimTypes.Role) != "Admin")
+                return Forbid();
+
+            ReviewDTO updatedProvider = await _reviewsService.UpdateAsync(id, updateRequestDTO);
             return Ok(updatedProvider);
         }
 
@@ -101,8 +110,15 @@ namespace FoodApp.Controllers
             var receivedDish = await _dishesService.GetAsync(dishId);
             if (receivedDish == null)
                 return NotFound();
-            if (!await _reviewsService.DeleteAsync(id))
+
+            var review = await  _reviewsService.GetAsync(id);
+            if(review == null)
                 return NotFound();
+            if (Convert.ToInt64(User.FindFirstValue("userId")) != review.UserId && User.FindFirstValue(ClaimTypes.Role) != "Admin")
+                return Forbid();
+
+            await _reviewsService.DeleteAsync(id);
+
             return NoContent();
         }
     }

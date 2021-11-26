@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FoodApp.Models;
+using FoodApp.Models.DataTransferObjects;
 
 namespace FoodApp.Profiles
 {
@@ -7,8 +8,8 @@ namespace FoodApp.Profiles
     {
         public DishProfile()
         {
-            CreateMap<CreateDishDTO, Dish>();
-            CreateMap<Dish, DishDTO>();
+            CreateMap<UserDTO, User>();
+            CreateMap<User, UserDTO>();
         }
     }
 }

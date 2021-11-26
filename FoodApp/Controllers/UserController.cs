@@ -9,12 +9,14 @@ using FoodApp.Models.DataTransferObjects;
 using FoodApp.Models.DataTransferObjects.Responses;
 using FoodApp.Services;
 using FoodApp.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FoodApp.Controllers
 {
+    [AllowAnonymous]
     [Route(RouteConsts.BASE_URL)]
     [ApiController]
     public class UserController : Controller
@@ -35,7 +37,7 @@ namespace FoodApp.Controllers
         {
             var user = await _userManager.FindByNameAsync(registerUserDTO.UserName);
             if(user != null)
-                return BadRequest("Invalid request");
+                return BadRequest();
             var newUser = new User
             {
                 Email = registerUserDTO.Email,
@@ -46,7 +48,7 @@ namespace FoodApp.Controllers
             var createUserResult = await _userManager.CreateAsync(newUser, registerUserDTO.Password);
 
             if (createUserResult == null)
-                return BadRequest("Could not create user");
+                return BadRequest();
 
             // await _userManager.AddToRoleAsync(newUser, "SimpleUser");
             return CreatedAtAction(nameof(Register), _mapper.Map<UserDTO>(createUserResult));
@@ -58,11 +60,11 @@ namespace FoodApp.Controllers
         {
             var user = await _userManager.FindByNameAsync(loginUserDTO.UserName);
             if (user == null)
-                return BadRequest("User name or password is invalid");
+                return BadRequest();
 
             var isPasswrodValid = await _userManager.CheckPasswordAsync(user.Id, loginUserDTO.Password);
             if(!isPasswrodValid)
-                return BadRequest("User name or password is invalid");
+                return BadRequest();
 
             var accessToken = await _authService.CreateAccessTokenAsync(user);
 

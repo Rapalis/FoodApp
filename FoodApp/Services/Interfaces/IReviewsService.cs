@@ -8,7 +8,7 @@ namespace FoodApp.Services
     {
         Task<ReviewDTO> GetAsync(long id);
         Task<IEnumerable<ReviewDTO>> GetAllAsync(long dishId);
-        Task<ReviewDTO> CreateAsync(long dishId, CreateReviewDTO createRequestDTO);
+        Task<ReviewDTO> CreateAsync(long dishId, CreateReviewDTO createRequestDTO, long userId);
         Task<ReviewDTO> UpdateAsync(long id, CreateReviewDTO updateRequestDTO);
         Task<bool> DeleteAsync(long id);
     }

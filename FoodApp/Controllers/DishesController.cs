@@ -1,6 +1,7 @@
 ﻿using FoodApp.Constants;
 using FoodApp.Models;
 using FoodApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 namespace FoodApp.Controllers
 {
     [Route(RouteConsts.BASE_URL)]
+    [Authorize]
     [ApiController]
     public class DishesController : ControllerBase
     {
@@ -44,6 +46,7 @@ namespace FoodApp.Controllers
             return Ok(receivedDish);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost (RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<DishDTO>> Post(long providerId, [FromBody] CreateDishDTO createRequestDTO)
@@ -51,9 +54,11 @@ namespace FoodApp.Controllers
             DishDTO createdDish = await _dishesService.CreateAsync(providerId, createRequestDTO);
             if (createdDish == null)
                 return NotFound();
-            return CreatedAtAction(nameof(Get), new { id = createdDish.Id }, createdDish);
+            return CreatedAtAction(nameof(Get), new { providerId = providerId, id = createdDish.Id }, createdDish);
         }
 
+
+        [Authorize(Roles = "Admin")]
         [HttpPut(RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -68,6 +73,7 @@ namespace FoodApp.Controllers
             return Ok(updatedDish);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete(RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

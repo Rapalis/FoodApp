@@ -30,6 +30,7 @@
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL.Design" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="Utils\" />
   </ItemGroup>
 </Project>
