@@ -72,7 +72,7 @@ namespace FoodApp.Migrations
                     Message = table.Column<string>(type: "character varying(4000)", maxLength: 4000, nullable: false),
                     Score = table.Column<short>(type: "smallint", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
-                    DishID = table.Column<long>(type: "bigint", nullable: false)
+                    DishID = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {

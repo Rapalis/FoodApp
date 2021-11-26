@@ -36,14 +36,14 @@ namespace FoodApp
             services.AddAutoMapper(typeof(Startup));
 
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
+            /*services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "Food app API",
                 });
-            });
+            });*/
 
             // Configuring database
             services.AddDbContext<DatabaseContext>(options =>
@@ -56,12 +56,11 @@ namespace FoodApp
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             // Enable Swagger
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Food app API V1");
-            });
-
+            /*  app.UseSwagger();
+              app.UseSwaggerUI(c =>
+              {
+                  c.SwaggerEndpoint("/swagger/v1/swagger.json", "Food app API V1");
+              });*/
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

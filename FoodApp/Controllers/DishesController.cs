@@ -13,6 +13,7 @@ namespace FoodApp.Controllers
     public class DishesController : ControllerBase
     {
         private readonly IDishesService _dishesService;
+        private readonly IProvidersService _providersService;
 
         public DishesController(IDishesService dishesService)
         {
@@ -29,11 +30,14 @@ namespace FoodApp.Controllers
             return Ok(receivedDishes);
         }
 
-        [HttpGet(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
+        [HttpGet(RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DishDTO>> Get(long id)
+        public async Task<ActionResult<DishDTO>> Get(long providerId, long id)
         {
+            var receivedProvider = await _providersService.GetAsync(providerId);
+            if (receivedProvider == null)
+                return NotFound();
             DishDTO receivedDish = await _dishesService.GetAsync(id);
             if (receivedDish == null)
                 return NotFound();
@@ -50,22 +54,28 @@ namespace FoodApp.Controllers
             return CreatedAtAction(nameof(Get), new { id = createdDish.Id }, createdDish);
         }
 
-        [HttpPut(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
+        [HttpPut(RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<DishDTO>> Put(long id, [FromBody] CreateDishDTO updateRequestDTO)
+        public async Task<ActionResult<DishDTO>> Put(long providerId, long id, [FromBody] CreateDishDTO updateRequestDTO)
         {
+            var receivedProvider = await _providersService.GetAsync(providerId);
+            if (receivedProvider == null)
+                return NotFound();
             DishDTO updatedDish = await _dishesService.UpdateAsync(id, updateRequestDTO);
             if (updatedDish == null)
                 return NotFound();
             return Ok(updatedDish);
         }
 
-        [HttpDelete(RouteConsts.DISHES_ENDPOINT_URL + "/{id}")]
+        [HttpDelete(RouteConsts.PROVIDERS_DISHES_ENDPOINT_URL + "/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> Delete(long id)
+        public async Task<ActionResult> Delete(long providerId, long id)
         {
+            var receivedProvider = await _providersService.GetAsync(providerId);
+            if (receivedProvider == null)
+                return NotFound();
             if (!await _dishesService.DeleteAsync(id))
                 return NotFound();
             return NoContent();

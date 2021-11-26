@@ -3,15 +3,17 @@ using System;
 using FoodApp.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace FoodApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211008110753_fakeuser")]
+    partial class fakeuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +94,7 @@ namespace FoodApp.Migrations
                     b.Property<short>("Score")
                         .HasColumnType("smallint");
 
-                    b.Property<long?>("UserId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
                     b.HasKey("Id");
@@ -162,7 +164,9 @@ namespace FoodApp.Migrations
 
                     b.HasOne("FoodApp.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Dish");
 

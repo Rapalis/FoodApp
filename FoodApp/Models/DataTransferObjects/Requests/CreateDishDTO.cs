@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace FoodApp.Models
 {
     public class CreateDishDTO
