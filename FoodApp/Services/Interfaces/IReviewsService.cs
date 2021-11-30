@@ -11,5 +11,7 @@ namespace FoodApp.Services
         Task<ReviewDTO> CreateAsync(long dishId, CreateReviewDTO createRequestDTO);
         Task<ReviewDTO> UpdateAsync(long id, CreateReviewDTO updateRequestDTO);
         Task<bool> DeleteAsync(long id);
+        Task<double> CaculateAvarageDishScore(long dishId);
+
     }
 }

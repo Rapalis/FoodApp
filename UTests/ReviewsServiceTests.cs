@@ -7,6 +7,7 @@ using FoodApp.Services;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -33,6 +34,24 @@ namespace UTests
 
             _ReviewsService = new ReviewsService(moqDishesRepository.Object, moqReviewsRepository.Object, mapper);
         }
+
+        [Fact]
+        public async void AddNewReviewWithBadDishIdTest()
+        {
+            // Arange
+            long DishID = 1;
+
+            moqDishesRepository.Setup(DishRep => DishRep.Exists(DishID).Result).Returns(false);
+
+            //Act
+            var result = await _ReviewsService.CreateAsync(DishID, new CreateReviewDTO());
+
+            //Assert
+            Assert.Null(result);
+            moqReviewsRepository.Verify(mock => mock.CreateAsync(It.IsAny<Review>()), Times.Never());
+
+        }
+
         [Fact]
         public async void AddNewReviewTest()
         {
@@ -144,6 +163,22 @@ namespace UTests
         }
 
         [Fact]
+        public async void GetAllReviewsWithBadDishTest()
+        {
+            long DishID = 1;
+
+            //Arange
+            moqDishesRepository.Setup(DishRep => DishRep.Exists(DishID).Result).Returns(false);
+
+            //Act
+            var result = await _ReviewsService.GetAllAsync(DishID);
+
+            //Assert
+            Assert.Null(result);
+            moqReviewsRepository.Verify(mock => mock.GetAllAsync(It.IsAny<long>()), Times.Never());
+        }
+
+        [Fact]
         public async void GetAllAsyncReviewTest()
         {
             const string Description = "Descript";
@@ -209,6 +244,26 @@ namespace UTests
             //Assert
             Assert.True(result);
 
+        }
+
+        [Theory]
+        [InlineData(1.5d, 1, 2)]
+        [InlineData(5, 5, 5, 5, 5)]
+        [InlineData(3, 1, 2, 6)]
+        [InlineData(2, 2)]
+
+        public async void CaculateAvarageDishScoreTest(double expectedAvarage, params int[] scores)
+        {
+            //Arange
+            const long dishId = 1;
+            IEnumerable<Review> moqReviews = new List<Review>(scores.Select(s => new Review { Score = (short)s }));
+            // double avarage = scores.Aggregate(0, (total, value) => total + value) / scores.Length;
+            moqReviewsRepository.Setup(rep => rep.GetAllAsync(dishId).Result).Returns(moqReviews);
+
+            //Act
+            double result = await _ReviewsService.CaculateAvarageDishScore(dishId);
+            //Assert
+            Assert.Equal(expectedAvarage, result);
         }
     }
 }

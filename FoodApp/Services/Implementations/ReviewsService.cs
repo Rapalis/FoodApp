@@ -3,6 +3,7 @@ using FoodApp.Models;
 using FoodApp.Models.DataTransferObjects;
 using FoodApp.Repositories;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FoodApp.Services
@@ -58,6 +59,18 @@ namespace FoodApp.Services
         public async Task<bool> DeleteAsync(long id)
         {
             return await _reviewsRepository.DeleteAsync(id);
+        }
+
+        public async Task<double> CaculateAvarageDishScore(long dishId)
+        {
+            IEnumerable<Review> reviews = await _reviewsRepository.GetAllAsync(dishId);
+            int totalScore = 0;
+            foreach(Review review in reviews)
+            {
+                totalScore += review.Score;
+            }
+
+            return (double)totalScore / reviews.Count();
         }
     }
 }
