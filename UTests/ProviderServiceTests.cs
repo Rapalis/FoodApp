@@ -109,7 +109,7 @@ namespace UTests
                 Address = Address1
             };
             providers[0] = fakeProvider;
-            providers[1] = fakeProvider;
+            providers[1] = fakeProvider1;
 
             moqProvidersRepository.Setup(providerRep => providerRep.GetAllAsync().Result).Returns(providers);
 
